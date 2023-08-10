@@ -9,13 +9,5 @@ async def cmd_back(call: types.CallbackQuery):
                               reply_markup=get_kb_menu())
 
 
-
-
-
-
-
-
-
 def register_handler_back(dp: Dispatcher):
     dp.register_callback_query_handler(cmd_back, text="back_general_menu")
-
