@@ -1,0 +1,37 @@
+version: "3.1"
+
+services:
+  db:
+    container_name: database
+    image: postgres:14
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_HOST_AUTH_METHOD=trust
+     - POSTGRES_DB=advocat
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - botnet
+    volumes:
+      - ./postgres:/var/lib/postgresql
+
+  tgbot:
+    container_name: bot
+    build:
+      context: .
+    command: python3 main.py
+    restart: always
+    volumes:
+    - .:/src
+    networks:
+    - botnet
+    env_file:
+          - ".env"
+
+    depends_on:
+      - db
+
+networks:
+  botnet:
+    driver: bridge
