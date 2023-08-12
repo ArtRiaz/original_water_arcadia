@@ -45,9 +45,6 @@ outcome==1.2.0
 packaging==23.0
 pycparser==2.21
 pydantic==1.10.4
-pyOpenSSL==23.0.0
-PySocks==1.7.1
-python-dotenv==1.0.0
 pytz==2020.5
 PyYAML==5.4.1
 shipping==0.2.2
