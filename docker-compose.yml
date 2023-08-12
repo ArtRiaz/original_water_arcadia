@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   db:
-    container_name: database
+    container_name: data
     image: postgres:14
     environment:
      - POSTGRES_USER=postgres
@@ -17,7 +17,7 @@ services:
       - ./postgres:/var/lib/postgresql
 
   tgbot:
-    container_name: bot
+    container_name: bot_water
     build:
       context: .
     command: python3 main.py
