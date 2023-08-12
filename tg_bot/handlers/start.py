@@ -79,7 +79,7 @@ async def empty_cart(call: types.CallbackQuery):
     sticker = "CAACAgEAAxkBAAEJ7N9kzWIUHWUvKjjuDieMJBrJoqWegQACDwIAAlCNKEcb6ebEddn2-i8E"
     await db.empty_cart(user_id)
     await call.bot.send_sticker(chat_id=call.from_user.id, sticker=sticker)
-    await call.message.answer("Ваша корзина пуста...", )
+    await call.message.answer("Ваш кошик порожній...", )
 
 
 async def buying(call: types.CallbackQuery, callback_data: dict, state: FSMContext):
@@ -117,21 +117,21 @@ async def enter_quantity(message: types.Message, state: FSMContext):
     markup = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(
-                text="☑️ Додати у корзину",
+                text="☑️ Додати у кошик",
                 callback_data="agree")],
         [
             InlineKeyboardButton(text="🔁 Ввести кількість знову",
                                  callback_data="change")
         ], [
             InlineKeyboardButton(
-                text="❌ Відмінити покупку",
+                text="❌ Відмінити замовлення",
                 callback_data="cancel")
         ]])
 
     await states.Purchase.Approval.set()
 
     await message.answer(
-        "Добре, бажаєте купити {quantity} шт. <b>{name}</b> за ціною <b>{price:,} UAH</b>\n\n"
+        "Добре, бажаєте купити {quantity} шт. <b>{name}</b> за ціною <b>{price:,} UAH</b>\n"
         "Вийде <b>{amount:,} UAH</b>. Ви підтверджуйте ?".format(
             quantity=quantity,
             name=item.name,
@@ -150,7 +150,7 @@ async def not_quantity(message: types.Message):
 # Если человек нажал на кнопку Отменить во время покупки - убираем все
 async def approval(call: types.CallbackQuery, state: FSMContext):
     await call.message.edit_reply_markup()  # Убираем кнопки
-    await call.message.answer("Ви відмінили покупку", reply_markup=get_back())
+    await call.message.answer("Ви відмінили замовлення", reply_markup=get_back())
     await state.reset_state()
 
 
@@ -174,8 +174,8 @@ async def enter_agree(call: types.CallbackQuery, state: FSMContext):
                               ' або перейдить у <b>"Моя корзина"</b> для сплати товару ',
                               reply_markup=InlineKeyboardMarkup(
                                   inline_keyboard=[[
-                                      InlineKeyboardButton("🏁 Зробити ще заказ", callback_data="do_order"),
-                                      InlineKeyboardButton("🛒 Моя корзина", callback_data="my_cart")
+                                      InlineKeyboardButton("🏁 Оформить ще замовлення", callback_data="do_order"),
+                                      InlineKeyboardButton("🛒 Мій кошик", callback_data="my_cart")
                                   ]]
                               ))
     await state.reset_state()
@@ -191,19 +191,19 @@ async def my_cart(call: types.CallbackQuery):
     user_id = call.from_user.id
     summa = 0
     all_cart = await db.show_cart(user_id)
-    all_items_text = "🛒 Корзина:\n" \
+    all_items_text = "🛒 Кошик:\n" \
                      "\n"
     for num, cart in enumerate(all_cart, start=1):
         amount = cart.amount / 100
         summa += amount
         all_items_text += f"{num} {cart.name} = {amount} UAH\n"
     await call.message.answer(all_items_text)
-    await call.message.answer(f"💵 Итого: {summa}UAH", reply_markup=menu_cart())
+    await call.message.answer(f"💵 Всього: {summa}UAH", reply_markup=menu_cart())
 
 
 # Оплата наличными, регистрация
 async def pay_cash(call: types.CallbackQuery):
-    await call.message.answer("Бажаєте разрахуватись готівкою при отриманні товару, введить свои данні та адресу "
+    await call.message.answer("Бажаєте разрахуватись <b>готівкою</b> при отриманні товару, введить свои данні та адресу"
                               "доставки")
     await states.OrderItems.Name.set()
     await call.message.answer("Введить своє ім'я:")
@@ -233,6 +233,7 @@ async def pay_cash_phone(message: types.Message, state: FSMContext):
         await message.answer("Введить вірний номер")
 
 
+# Регестрируем адрес
 async def pay_cash_adress(message: types.Message, state: FSMContext):
     adress = message.text
     data = await state.get_data()
@@ -244,11 +245,13 @@ async def pay_cash_adress(message: types.Message, state: FSMContext):
            f"Дата: {datetime.datetime.now(tz=pytz.timezone('Europe/Kiev'))}\n" \
            f"Ваше ім'я: {register.name}\n" \
            f"Ваш номер телефону: {register.phone}\n" \
-           f"Ваша адреса: {register.adress}"
+           f"Ваша адреса: {register.adress}\n" \
+           f"<b>Оплата готівкою</b>"
 
     await message.bot.send_sticker(chat_id=message.from_user.id,
                                    sticker="CAACAgIAAxkBAAEJ7nNkzq1jPENuM1E0IY9osPMRyBpwWwACogEAAhZCawqhd3djmk6DIS8E")
-    await message.answer("Ваше замовлення було відправлено")
+    await message.answer("Ваше замовлення було відправлено.\n"
+                         "Наш менеджер зв'яжется з Вами найблищим часом")
 
     user_id = message.from_user.id
     summa = 0
@@ -263,7 +266,82 @@ async def pay_cash_adress(message: types.Message, state: FSMContext):
     for admin in config.tg_bot.admin_ids:
         await message.bot.send_message(chat_id=admin, text=text)
         await message.bot.send_message(chat_id=admin, text=all_items_text)
-        await message.bot.send_message(chat_id=admin, text=f"💵 Итого: {summa}UAH")
+        await message.bot.send_message(chat_id=admin, text=f"💵 Всього: {summa}UAH")
+
+        # Очистить корзину после оплаты
+        await db.empty_cart(user_id)
+        # Сбросить состояние
+        await state.reset_state()
+
+    return
+
+
+# Оплата курьеру карточкой, регистрация
+async def pay_card_cur(call: types.CallbackQuery):
+    await call.message.answer("Бажаєте разрахуватись <b>карткою</b> при отриманні товару, введить свои данні та адресу "
+                              "доставки")
+    await states.OrderCard.Name_card.set()
+    await call.message.answer("Введить своє ім'я:")
+
+
+# Регистрация имя
+async def pay_card_name(message: types.Message, state: FSMContext):
+    name = message.text
+    register = states.OrderCard()
+    register.name = name
+    await states.OrderCard.next()
+    await state.update_data(register=register)
+    await message.reply("Введіть свій контактний номер телефону: ")
+
+
+# Регистрация телефона
+async def pay_card_phone(message: types.Message, state: FSMContext):
+    if all(c.isdigit() or c == "+" for c in message.text):  # проверка на цифры и символ +
+        phone = message.text
+        data = await state.get_data()
+        register = data.get("register")
+        register.phone = phone
+        await state.update_data(register=register)
+        await states.OrderCard.next()
+        await message.answer("Введиіть свою адресу доставки:")
+    else:
+        await message.answer("Введить вірний номер")
+
+
+# Регистрация адреса
+async def pay_card_adress(message: types.Message, state: FSMContext):
+    adress = message.text
+    data = await state.get_data()
+    register = data.get("register")
+    register.adress = adress
+    await state.update_data(register=register)
+
+    text = f"Вам прийшов заказ:\n" \
+           f"Дата: {datetime.datetime.now(tz=pytz.timezone('Europe/Kiev'))}\n" \
+           f"Ваше ім'я: {register.name}\n" \
+           f"Ваш номер телефону: {register.phone}\n" \
+           f"Ваша адреса: {register.adress}\n" \
+           f"<b>Оплата карткою, будь ласка не забудьте взяти термінал</b>"
+
+    await message.bot.send_sticker(chat_id=message.from_user.id,
+                                   sticker="CAACAgIAAxkBAAEJ7nNkzq1jPENuM1E0IY9osPMRyBpwWwACogEAAhZCawqhd3djmk6DIS8E")
+    await message.answer("Ваше замовлення було відправлено.\n"
+                         "Наш менеджер зв'яжется з Вами найблищим часом")
+
+    user_id = message.from_user.id
+    summa = 0
+    all_cart = await db.show_cart(user_id)
+    all_items_text = "Товари замовлення:\n" \
+                     "\n"
+    for num, cart in enumerate(all_cart, start=1):
+        amount = cart.amount / 100
+        summa += amount
+        all_items_text += f"{num} {cart.name} = {amount} UAH\n"
+
+    for admin in config.tg_bot.admin_ids:
+        await message.bot.send_message(chat_id=admin, text=text)
+        await message.bot.send_message(chat_id=admin, text=all_items_text)
+        await message.bot.send_message(chat_id=admin, text=f"💵 Всього: {summa}UAH")
 
         # Очистить корзину после оплаты
         await db.empty_cart(user_id)
@@ -323,15 +401,17 @@ async def checkout(query: PreCheckoutQuery):
 
     await query.bot.send_sticker(chat_id=query.from_user.id,
                                  sticker="CAACAgIAAxkBAAEJ7nNkzq1jPENuM1E0IY9osPMRyBpwWwACogEAAhZCawqhd3djmk6DIS8E")
-    await query.bot.send_message(chat_id=query.from_user.id, text=f"Дякую за Ваше замовлення")
+    await query.bot.send_message(chat_id=query.from_user.id, text=f"Ваше замовлення було відправлено.\n"
+                                                                  "Наш менеджер зв'яжется з Вами найблищим часом")
 
     for admin in config.tg_bot.admin_ids:
-        await query.bot.send_message(chat_id=admin, text=f'Дата: {datetime.datetime.now(tz=pytz.timezone("Europe/Kiev"))}\n'
-                                                         f"Товар: {all_items_text}\n"
-                                                         f"Номер телефону: {query.order_info.phone_number}\n"
-                                                         f"Адреса: {query.order_info.shipping_address.city}, "
-                                                         f"{query.order_info.shipping_address.street_line1}\n"
-                                                         f"Сума: {query.total_amount / 100} UAH")
+        await query.bot.send_message(chat_id=admin,
+                                     text=f'Дата: {datetime.datetime.now(tz=pytz.timezone("Europe/Kiev"))}\n'
+                                          f"Товар: {all_items_text}\n"
+                                          f"Номер телефону: {query.order_info.phone_number}\n"
+                                          f"Адреса: {query.order_info.shipping_address.city}, "
+                                          f"{query.order_info.shipping_address.street_line1}\n"
+                                          f"Сума: {query.total_amount / 100} UAH")
 
     # Очистить корзину после оплаты
     await db.empty_cart(user_id)
@@ -354,6 +434,10 @@ def register_start(dp: Dispatcher):
     dp.register_message_handler(pay_cash_name, state=states.OrderItems.Name)
     dp.register_message_handler(pay_cash_phone, state=states.OrderItems.Phone)
     dp.register_message_handler(pay_cash_adress, state=states.OrderItems.Adress)
+    dp.register_callback_query_handler(pay_card_cur, text='pay_card_cur')
+    dp.register_message_handler(pay_card_name, state=states.OrderCard.Name_card)
+    dp.register_message_handler(pay_card_phone, state=states.OrderCard.Phone_card)
+    dp.register_message_handler(pay_card_adress, state=states.OrderCard.Adress_card)
     dp.register_shipping_query_handler(choose_shipping_city)
     dp.register_callback_query_handler(pay, text_contains="pay_card")
     dp.register_pre_checkout_query_handler(checkout)

@@ -18,3 +18,9 @@ class OrderItems(StatesGroup):
     Name = State()
     Phone = State()
     Adress = State()
+
+
+class OrderCard(StatesGroup):
+    Name_card = State()
+    Phone_card = State()
+    Adress_card = State()

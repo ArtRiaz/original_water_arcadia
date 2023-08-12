@@ -80,7 +80,7 @@ async def enter_desc(message: types.Message, state: FSMContext):
     await message.answer("Назва: {name}\n"
                          "Опис: {description}\n"
                          "Введить ціну товара у копійках або натисніть /cancel".format(name=item.name,
-                                                                                         description=description))
+                                                                                       description=description))
 
     await NewItem.Price.set()
     check = await state.update_data(item=item)

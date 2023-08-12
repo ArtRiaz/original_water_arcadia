@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters import Text
 
 
 async def cmd_menu(call: types.CallbackQuery):
-    with open('logo.jpg', 'rb') as photo:
+    with open('our_company.jpg', 'rb') as photo:
         await call.message.delete()
         await call.message.bot.send_photo(chat_id=call.from_user.id,
                                           photo=photo,
@@ -26,7 +26,12 @@ async def sertificate(call: types.CallbackQuery):
     with open("water_doc2.jpg", "rb") as photo2:
         await call.message.bot.send_photo(chat_id=call.from_user.id,
                                           photo=photo2,
-                                          caption="Протокол № 428", reply_markup=get_back())
+                                          caption="Протокол № 428")
+    await asyncio.sleep(1)
+    with open("sert_3.png", "rb") as photo2:
+        await call.message.bot.send_photo(chat_id=call.from_user.id,
+                                          photo=photo2,
+                                          caption="Санітарне-мікробіологічне дослідження", reply_markup=get_back())
 
 
 def register_handlers_about(dp: Dispatcher):

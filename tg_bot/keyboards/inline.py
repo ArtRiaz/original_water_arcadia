@@ -71,9 +71,11 @@ def menu_cart():
 # Выбор способа оплаты
 def pay_cash_or_card():
     ikb = InlineKeyboardMarkup(inline_keyboard=[[
-        InlineKeyboardButton("💵 Оплатити готівкою", callback_data="pay_cash")
-    ], [
-        InlineKeyboardButton("💳 Оплатити через бота", callback_data="pay_card")
+        InlineKeyboardButton("💵 Оплата кур'єру готівкою", callback_data="pay_cash")
+    ], [InlineKeyboardButton("💳 Оплата кур'єру картою", callback_data="pay_card_cur")
+
+        ], [
+        InlineKeyboardButton("📲 Оплатити через бота", callback_data="pay_card")
     ]])
 
     return ikb
@@ -91,6 +93,7 @@ def menu_admin_panel():
     ]])
 
     return ikb
+
 
 # Назад в панель админа
 
