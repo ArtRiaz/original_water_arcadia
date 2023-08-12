@@ -3,7 +3,6 @@ import logging
 
 from tg_bot.config import load_config
 from aiogram import Bot, Dispatcher
-from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from tg_bot.middlewares.anti_time import Anti_time
 # from tg_bot.fillters.admin import AdminFilter
@@ -51,7 +50,7 @@ async def main():
     config = load_config(".env")
 
     bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
-    storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
+    storage = MemoryStorage()
     dp = Dispatcher(bot, storage=storage)
     bot['config'] = config  # доставать config из переменной bot, если в handler я хочу достать что то из Config
     # я делаю => bot.get("config")
