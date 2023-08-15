@@ -1,20 +1,17 @@
 from aiogram import types, Dispatcher
-from tg_bot.keyboards.reply import kb_menu, get_kb_menu, get_back
-from aiogram.dispatcher.filters import Text
-from tg_bot.service.database import DBCommands, create_db, Item
-from tg_bot.service import database
-from tg_bot.config import load_config, PAYMENT_TOKEN
+from keyboards.reply import kb_menu, get_kb_menu, get_back
+from service.database import DBCommands, create_db
+from service import database
+from config import load_config, PAYMENT_TOKEN
 from aiogram import Bot
 import asyncio
 from aiogram.utils.callback_data import CallbackData
 from aiogram.dispatcher import FSMContext
 import datetime
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, LabeledPrice, PreCheckoutQuery, ShippingQuery, \
-    ShippingOption, ReplyKeyboardMarkup, KeyboardButton
-from tg_bot.misc import states
-from aiogram.types.message import ContentType
-from tg_bot.keyboards.inline import menu_cart, pay_cash_or_card
-from tg_bot.models.shipping import POST_REGULAR_SHIPPING
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, LabeledPrice, PreCheckoutQuery, ShippingQuery
+from misc import states
+from keyboards.inline import menu_cart, pay_cash_or_card
+from models.shipping import POST_REGULAR_SHIPPING
 import pytz
 
 bot = Bot

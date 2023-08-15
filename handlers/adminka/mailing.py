@@ -1,13 +1,11 @@
 import asyncio
 
-from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher, Bot
-from aiogram.dispatcher.filters import Text, Command
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
-from tg_bot.config import config
-from tg_bot.service.database import DBCommands
+from config import config
+from service.database import DBCommands
 
 db = DBCommands()
 bot = Bot(config.tg_bot.token)

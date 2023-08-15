@@ -1,8 +1,8 @@
 from aiogram import types, Dispatcher
-from tg_bot.service.database import DBCommands
+from service.database import DBCommands
 from aiogram.utils.callback_data import CallbackData
 import asyncio
-from tg_bot.keyboards.inline import back_menu_admin_panel
+from keyboards.inline import back_menu_admin_panel
 
 buy_item = CallbackData("buy", "item_id")
 db = DBCommands()

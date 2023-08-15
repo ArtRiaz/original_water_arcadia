@@ -1,23 +1,23 @@
 import asyncio
 import logging
 
-from tg_bot.config import load_config
+from config import load_config
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from tg_bot.middlewares.anti_time import Anti_time
+from middlewares.anti_time import Anti_time
 # from tg_bot.fillters.admin import AdminFilter
 # from tg_bot.handlers.admin import register_admin
-from tg_bot.handlers.start import register_start
-from tg_bot.handlers.our_company import register_handlers_about
-from tg_bot.handlers.back import register_handler_back
-from tg_bot.handlers.contact import register_handler_contact
-from tg_bot.handlers.working_time import handler_calendar
-from tg_bot.handlers.support import get_support
-from tg_bot.handlers.questions import question_menu
-from tg_bot.handlers.adminka.admin_panel import register_handler_create_items
-from tg_bot.handlers.adminka.mailing import register_handler_mailing
-from tg_bot.handlers.adminka.delete_item import register_delete_items
-from tg_bot.misc.set_command_default import set_commands
+from handlers.start import register_start
+from handlers.our_company import register_handlers_about
+from handlers.back import register_handler_back
+from handlers.contact import register_handler_contact
+from handlers.working_time import handler_calendar
+from handlers.support import get_support
+from handlers.questions import question_menu
+from handlers.adminka.admin_panel import register_handler_create_items
+from handlers.adminka.mailing import register_handler_mailing
+from handlers.adminka.delete_item import register_delete_items
+from misc.set_command_default import set_commands
 
 logger = logging.getLogger(__name__)
 

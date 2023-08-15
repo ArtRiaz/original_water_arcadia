@@ -3,11 +3,11 @@ from asyncio import sleep
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from tg_bot.keyboards.inline import menu_admin_panel, back_menu_admin_panel
-from tg_bot.config import load_config
+from keyboards.inline import menu_admin_panel, back_menu_admin_panel
+from config import load_config
 from aiogram.dispatcher.filters import Text
-from tg_bot.misc.states import NewItem
-from tg_bot.service.database import Item, User
+from misc.states import NewItem
+from service.database import Item
 
 config = load_config()
 

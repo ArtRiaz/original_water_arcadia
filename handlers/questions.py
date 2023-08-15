@@ -1,8 +1,7 @@
 from aiogram.types import CallbackQuery
-from tg_bot.keyboards.reply import get_back
-from aiogram import types, Dispatcher
-from tg_bot.keyboards.inline import ikb_question, inline_questions_back
-from aiogram import Bot, Dispatcher
+from aiogram import types
+from keyboards.inline import ikb_question, inline_questions_back
+from aiogram import Dispatcher
 
 
 async def questions(call: types.CallbackQuery):

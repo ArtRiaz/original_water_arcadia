@@ -2,9 +2,8 @@ import random
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
-from tg_bot.config import TgBot
 from aiogram import Dispatcher, Bot
-from tg_bot.config import load_config
+from config import load_config
 
 
 support_callback = CallbackData("ask_support", "messages", "user_id", "as_user")

@@ -27,7 +27,7 @@ services:
     networks:
     - botnet
     env_file:
-          - ".env"
+      - ".env"
 
     depends_on:
       - db

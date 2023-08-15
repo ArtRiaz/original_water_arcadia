@@ -1,6 +1,6 @@
 from keyboards.inline import ikb_contact
 from aiogram import types, Dispatcher
-from tg_bot.keyboards.reply import get_back
+from keyboards.reply import get_back
 
 
 async def cmd_contact(call: types.CallbackQuery):

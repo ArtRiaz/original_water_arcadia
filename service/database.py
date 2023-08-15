@@ -1,13 +1,10 @@
-from aiogram import types, Bot
+from aiogram import types
 from gino import Gino
-import sqlalchemy as sa
 from sqlalchemy import (Column, Integer, BigInteger, String,
-                        Sequence, TIMESTAMP, Boolean, JSON)
+                        Sequence, TIMESTAMP)
 from sqlalchemy import sql
 # from gino.schema import GinoSchemaVisitor
-from tg_bot.config import load_config, POSTGRES_URL
-from typing import List
-import gino
+from config import load_config, POSTGRES_URL
 
 db = Gino()
 

@@ -1,8 +1,7 @@
 import asyncio
 
 from aiogram import types, Dispatcher
-from tg_bot.keyboards.reply import kb_menu, get_kb_menu, get_back, get_sertificate
-from aiogram.dispatcher.filters import Text
+from keyboards.reply import get_back, get_sertificate
 
 
 async def cmd_menu(call: types.CallbackQuery):
