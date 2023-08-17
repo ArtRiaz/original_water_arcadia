@@ -5,8 +5,6 @@ from config import load_config
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from middlewares.anti_time import Anti_time
-# from tg_bot.fillters.admin import AdminFilter
-# from tg_bot.handlers.admin import register_admin
 from handlers.start import register_start
 from handlers.our_company import register_handlers_about
 from handlers.back import register_handler_back
@@ -23,10 +21,6 @@ logger = logging.getLogger(__name__)
 
 def register_all_middleware(dp):
     dp.setup_middleware(Anti_time())
-
-
-# def register_all_fillters(dp):
-#     dp.filters_factory.bind(AdminFilter)
 
 
 def register_all_handlers(dp):
