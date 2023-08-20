@@ -52,4 +52,4 @@ def load_config(path: str = None):
 config = load_config()
 
 POSTGRES_URL = f"postgres://{config.db.user}:{config.db.password}@{config.db.host}/{config.db.database}"
-PAYMENT_TOKEN = "1877036958:TEST:7e05c87dc009083a0ae628407fc3b7abd0538fa1"
+PAYMENT_TOKEN = "1877036958:TEST:b48618a00463aa581864ca139be5e7a591e1fc15"

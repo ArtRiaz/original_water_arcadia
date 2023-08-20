@@ -41,10 +41,12 @@ async def next_time(callback: CallbackQuery, state: FSMContext):
     await state.finish()
 
     all_user_ids = await db.get_all_user_ids()
-    print(all_user_ids)
     for user in all_user_ids:
-        await dp.bot.send_message(chat_id=user, text=text)
-        await asyncio.sleep(0.33)
+        try:
+            await bot.send_message(chat_id=user.user_id, text=text)
+            await asyncio.sleep(0.33)
+        except Exception:
+            pass
     await callback.message.answer('Розсилка виконана')
 
 
@@ -73,10 +75,12 @@ async def start_next(callback: CallbackQuery, state: FSMContext):
     await state.finish()
 
     all_user_ids = await db.get_all_user_ids()
-    print(all_user_ids)
     for user in all_user_ids:
-        await dp.bot.send_photo(chat_id=user, photo=photo, caption=text)
-        await asyncio.sleep(0.33)
+        try:
+            await bot.send_photo(chat_id=user.user_id, photo=photo, caption=text)
+            await asyncio.sleep(0.33)
+        except Exception:
+            pass
     await callback.message.answer('Розсилка виконана')
 
 

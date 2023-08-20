@@ -51,7 +51,7 @@ async def cmd_menu(call: types.CallbackQuery):
 
 async def show_items(call: types.CallbackQuery):
     all_items = await db.show_items()
-    text = "<b>Товар:</b> {name}\n" \
+    text = "<b>Товар: {name}\n</b>" \
            "<b>Опис:</b> {description}\n" \
            "<b>Ціна:</b> \t{price:,} UAH\n"
     for item in all_items:

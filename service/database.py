@@ -14,20 +14,6 @@ config = load_config()
 # Документация
 # http://gino.fantix.pro/en/latest/tutorials/tutorial.html
 
-# class BaseModel(db.Model):
-#     __abstract__ = True
-#
-#     def __str__(self):
-#         model = self.__class__.__name__
-#         table: sa.Table = sa.intersect(self.__class__)
-#         primary_key_columns: List[sa.Column] = table.primary_key.columns
-#         values = {
-#             column.name: getattr(self, self._column_name_map[column.name])
-#             for column in primary_key_columns
-#         }
-#         values_str = " ".join(f"{name}={value!r}" for name, value in values.items())
-#         return f"<{model} {values_str}>"
-
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -99,8 +85,8 @@ class DBCommands:
 
     async def get_all_user_ids(self):
         users = await User.query.gino.all()  # Получаем всех пользователей из таблицы
-        user_ids = [user.user_id for user in users]
-        return user_ids
+#        user_ids = [user.user_id for user in users]
+        return users
 
     async def show_items(self):
         await db.set_bind(POSTGRES_URL)
